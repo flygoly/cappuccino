@@ -1,0 +1,28 @@
+.wpd-admin-wrap .wpd-image-preview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 220px;
+	height: 220px;
+	margin-bottom: 10px;
+	border: 1px dashed #c3c4c7;
+	border-radius: 4px;
+	background: #f6f7f7;
+	overflow: hidden;
+}
+
+.wpd-admin-wrap .wpd-image-preview img {
+	display: block;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+}
+
+.wpd-admin-wrap .wpd-no-image {
+	color: #646970;
+	font-size: 13px;
+}
+
+.wpd-admin-wrap #wpd-hint-text {
+	max-width: 520px;
+}

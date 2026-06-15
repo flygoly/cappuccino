@@ -68,4 +68,6 @@ cappuccino/
 
 ## License
 
-GPLv2 or later. See [LICENSE](https://www.gnu.org/licenses/gpl-2.0.html).
+This project is licensed under the **GNU General Public License v2.0 or later**.
+
+See the [LICENSE](LICENSE) file for the full license text.

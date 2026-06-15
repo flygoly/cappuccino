@@ -1,5 +1,5 @@
 === Cappuccino ===
-Contributors: cappuccino
+Contributors: flygoly
 Tags: donate, tip, appreciation, qr code, content
 Requires at least: 5.8
 Tested up to: 6.8

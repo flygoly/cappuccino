@@ -68,4 +68,6 @@ cappuccino/
 
 ## 许可证
 
-GPLv2 或更高版本。详见 [LICENSE](https://www.gnu.org/licenses/gpl-2.0.html)。
+本项目采用 **GNU General Public License v2.0 或更高版本** 授权。
+
+完整协议文本见 [LICENSE](LICENSE) 文件。

@@ -1,5 +1,5 @@
-=== 文章赞赏 ===
-Contributors: wp-donate
+=== Cappuccino ===
+Contributors: cappuccino
 Tags: donate, tip, appreciation, qr code, content
 Requires at least: 5.8
 Tested up to: 6.8
@@ -12,7 +12,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-「文章赞赏」插件可以在每篇文章（或你选择的其他文章类型）底部自动插入一张赞赏图片。
+Cappuccino 插件可以在每篇文章（或你选择的其他文章类型）底部自动插入一张赞赏图片。
 
 **主要功能：**
 
@@ -26,9 +26,9 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 == Installation ==
 
-1. 将 `wp-donate` 文件夹上传到 `/wp-content/plugins/` 目录
-2. 在 WordPress 后台「插件」页面激活「文章赞赏」
-3. 进入「设置 → 文章赞赏」上传图片并配置选项
+1. 将 `cappuccino` 文件夹上传到 `/wp-content/plugins/` 目录
+2. 在 WordPress 后台「插件」页面激活「Cappuccino」
+3. 进入「设置 → Cappuccino」上传图片并配置选项
 
 == Frequently Asked Questions ==
 

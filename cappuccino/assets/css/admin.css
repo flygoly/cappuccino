@@ -1,4 +1,4 @@
-.wpd-admin-wrap .wpd-image-preview {
+.capp-admin-wrap .capp-image-preview {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -11,18 +11,18 @@
 	overflow: hidden;
 }
 
-.wpd-admin-wrap .wpd-image-preview img {
+.capp-admin-wrap .capp-image-preview img {
 	display: block;
 	max-width: 100%;
 	max-height: 100%;
 	object-fit: contain;
 }
 
-.wpd-admin-wrap .wpd-no-image {
+.capp-admin-wrap .capp-no-image {
 	color: #646970;
 	font-size: 13px;
 }
 
-.wpd-admin-wrap #wpd-hint-text {
+.capp-admin-wrap #capp-hint-text {
 	max-width: 520px;
 }

@@ -10,17 +10,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Handles plugin settings in WordPress admin.
  */
-class WPD_Admin {
+class Cappuccino_Admin {
 
 	/**
 	 * Option key.
 	 */
-	const OPTION_KEY = 'wpd_settings';
+	const OPTION_KEY = 'capp_settings';
 
 	/**
 	 * Legacy option key from previous plugin slug.
 	 */
-	const LEGACY_OPTION_KEY = 'wpad_settings';
+	const LEGACY_OPTION_KEY = 'wpd_settings';
+
+	/**
+	 * Legacy option key from earlier plugin slug.
+	 */
+	const LEGACY_OPTION_KEY_V1 = 'wpad_settings';
 
 	/**
 	 * Initialize admin hooks.
@@ -36,10 +41,10 @@ class WPD_Admin {
 	 */
 	public static function add_menu_page() {
 		add_options_page(
-			__( '文章赞赏设置', 'wp-donate' ),
-			__( '文章赞赏', 'wp-donate' ),
+			__( 'Cappuccino 设置', 'cappuccino' ),
+			__( 'Cappuccino', 'cappuccino' ),
 			'manage_options',
-			'wp-donate',
+			'cappuccino',
 			array( __CLASS__, 'render_page' )
 		);
 	}
@@ -49,7 +54,7 @@ class WPD_Admin {
 	 */
 	public static function register_settings() {
 		register_setting(
-			'wpd_settings_group',
+			'capp_settings_group',
 			self::OPTION_KEY,
 			array(
 				'type'              => 'array',
@@ -87,10 +92,13 @@ class WPD_Admin {
 		$settings = get_option( self::OPTION_KEY, array() );
 
 		if ( empty( $settings ) ) {
-			$legacy = get_option( self::LEGACY_OPTION_KEY, array() );
-			if ( ! empty( $legacy ) ) {
-				$settings = self::migrate_legacy_settings( $legacy );
-				update_option( self::OPTION_KEY, $settings );
+			foreach ( array( self::LEGACY_OPTION_KEY, self::LEGACY_OPTION_KEY_V1 ) as $legacy_key ) {
+				$legacy = get_option( $legacy_key, array() );
+				if ( ! empty( $legacy ) ) {
+					$settings = self::migrate_legacy_settings( $legacy );
+					update_option( self::OPTION_KEY, $settings );
+					break;
+				}
 			}
 		}
 
@@ -104,7 +112,7 @@ class WPD_Admin {
 	}
 
 	/**
-	 * Migrate settings from the old plugin option key.
+	 * Migrate settings from a legacy plugin option key.
 	 *
 	 * @param array $legacy Legacy settings.
 	 * @return array
@@ -176,22 +184,22 @@ class WPD_Admin {
 	 * @param string $hook Current admin page hook.
 	 */
 	public static function enqueue_scripts( $hook ) {
-		if ( 'settings_page_wp-donate' !== $hook ) {
+		if ( 'settings_page_cappuccino' !== $hook ) {
 			return;
 		}
 
 		wp_enqueue_media();
 		wp_enqueue_style(
-			'wpd-admin',
-			WPD_PLUGIN_URL . 'assets/css/admin.css',
+			'capp-admin',
+			CAPP_PLUGIN_URL . 'assets/css/admin.css',
 			array(),
-			WPD_VERSION
+			CAPP_VERSION
 		);
 		wp_enqueue_script(
-			'wpd-admin',
-			WPD_PLUGIN_URL . 'assets/js/admin.js',
+			'capp-admin',
+			CAPP_PLUGIN_URL . 'assets/js/admin.js',
 			array( 'jquery' ),
-			WPD_VERSION,
+			CAPP_VERSION,
 			true
 		);
 	}
@@ -215,47 +223,47 @@ class WPD_Admin {
 			}
 		}
 		?>
-		<div class="wrap wpd-admin-wrap">
-			<h1><?php esc_html_e( '文章赞赏设置', 'wp-donate' ); ?></h1>
+		<div class="wrap capp-admin-wrap">
+			<h1><?php esc_html_e( 'Cappuccino 设置', 'cappuccino' ); ?></h1>
 			<p class="description">
-				<?php esc_html_e( '上传赞赏图片（如微信/支付宝收款码），它将被自动插入到所选文章类型的底部。', 'wp-donate' ); ?>
+				<?php esc_html_e( '上传赞赏图片（如微信/支付宝收款码），它将被自动插入到所选文章类型的底部。', 'cappuccino' ); ?>
 			</p>
 
 			<form method="post" action="options.php">
-				<?php settings_fields( 'wpd_settings_group' ); ?>
+				<?php settings_fields( 'capp_settings_group' ); ?>
 
 				<table class="form-table" role="presentation">
 					<tr>
-						<th scope="row"><?php esc_html_e( '启用赞赏', 'wp-donate' ); ?></th>
+						<th scope="row"><?php esc_html_e( '启用赞赏', 'cappuccino' ); ?></th>
 						<td>
 							<label>
 								<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[enabled]" value="1" <?php checked( $settings['enabled'] ); ?> />
-								<?php esc_html_e( '在文章底部显示赞赏图片', 'wp-donate' ); ?>
+								<?php esc_html_e( '在文章底部显示赞赏图片', 'cappuccino' ); ?>
 							</label>
 						</td>
 					</tr>
 
 					<tr>
-						<th scope="row"><?php esc_html_e( '赞赏图片', 'wp-donate' ); ?></th>
+						<th scope="row"><?php esc_html_e( '赞赏图片', 'cappuccino' ); ?></th>
 						<td>
-							<div class="wpd-image-field">
-								<input type="hidden" id="wpd-image-id" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[image_id]" value="<?php echo esc_attr( $settings['image_id'] ); ?>" />
-								<input type="hidden" id="wpd-image-url" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[image_url]" value="<?php echo esc_attr( $settings['image_url'] ); ?>" />
+							<div class="capp-image-field">
+								<input type="hidden" id="capp-image-id" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[image_id]" value="<?php echo esc_attr( $settings['image_id'] ); ?>" />
+								<input type="hidden" id="capp-image-url" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[image_url]" value="<?php echo esc_attr( $settings['image_url'] ); ?>" />
 
-								<div class="wpd-image-preview" id="wpd-image-preview">
+								<div class="capp-image-preview" id="capp-image-preview">
 									<?php if ( $image_url ) : ?>
-										<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php esc_attr_e( '赞赏图片预览', 'wp-donate' ); ?>" />
+										<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php esc_attr_e( '赞赏图片预览', 'cappuccino' ); ?>" />
 									<?php else : ?>
-										<span class="wpd-no-image"><?php esc_html_e( '尚未选择图片', 'wp-donate' ); ?></span>
+										<span class="capp-no-image"><?php esc_html_e( '尚未选择图片', 'cappuccino' ); ?></span>
 									<?php endif; ?>
 								</div>
 
 								<p>
-									<button type="button" class="button" id="wpd-upload-btn">
-										<?php esc_html_e( '选择图片', 'wp-donate' ); ?>
+									<button type="button" class="button" id="capp-upload-btn">
+										<?php esc_html_e( '选择图片', 'cappuccino' ); ?>
 									</button>
-									<button type="button" class="button" id="wpd-remove-btn" <?php echo $image_url ? '' : 'style="display:none"'; ?>>
-										<?php esc_html_e( '移除图片', 'wp-donate' ); ?>
+									<button type="button" class="button" id="capp-remove-btn" <?php echo $image_url ? '' : 'style="display:none"'; ?>>
+										<?php esc_html_e( '移除图片', 'cappuccino' ); ?>
 									</button>
 								</p>
 							</div>
@@ -263,38 +271,38 @@ class WPD_Admin {
 					</tr>
 
 					<tr>
-						<th scope="row"><?php esc_html_e( '提示文字', 'wp-donate' ); ?></th>
+						<th scope="row"><?php esc_html_e( '提示文字', 'cappuccino' ); ?></th>
 						<td>
 							<label style="display:block;margin-bottom:10px;">
 								<input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[show_hint]" value="1" <?php checked( $settings['show_hint'] ); ?> />
-								<?php esc_html_e( '显示提示文字', 'wp-donate' ); ?>
+								<?php esc_html_e( '显示提示文字', 'cappuccino' ); ?>
 							</label>
 							<textarea
-								id="wpd-hint-text"
+								id="capp-hint-text"
 								class="large-text"
 								name="<?php echo esc_attr( self::OPTION_KEY ); ?>[hint_text]"
 								rows="3"
-								placeholder="<?php esc_attr_e( '如果觉得文章对你有帮助，欢迎赞赏支持', 'wp-donate' ); ?>"
+								placeholder="<?php esc_attr_e( '如果觉得文章对你有帮助，欢迎赞赏支持', 'cappuccino' ); ?>"
 							><?php echo esc_textarea( $settings['hint_text'] ); ?></textarea>
-							<p class="description"><?php esc_html_e( '显示在赞赏图片上方的说明文字，支持多行。取消勾选上方选项可隐藏提示文字。', 'wp-donate' ); ?></p>
+							<p class="description"><?php esc_html_e( '显示在赞赏图片上方的说明文字，支持多行。取消勾选上方选项可隐藏提示文字。', 'cappuccino' ); ?></p>
 						</td>
 					</tr>
 
 					<tr>
 						<th scope="row">
-							<label for="wpd-link-url"><?php esc_html_e( '点击链接', 'wp-donate' ); ?></label>
+							<label for="capp-link-url"><?php esc_html_e( '点击链接', 'cappuccino' ); ?></label>
 						</th>
 						<td>
-							<input type="url" id="wpd-link-url" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[link_url]" value="<?php echo esc_attr( $settings['link_url'] ); ?>" placeholder="https://" />
-							<p class="description"><?php esc_html_e( '可选。点击图片时跳转的链接（如赞赏页面），留空则图片不可点击。', 'wp-donate' ); ?></p>
+							<input type="url" id="capp-link-url" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[link_url]" value="<?php echo esc_attr( $settings['link_url'] ); ?>" placeholder="https://" />
+							<p class="description"><?php esc_html_e( '可选。点击图片时跳转的链接（如赞赏页面），留空则图片不可点击。', 'cappuccino' ); ?></p>
 						</td>
 					</tr>
 
 					<tr>
-						<th scope="row"><?php esc_html_e( '显示位置', 'wp-donate' ); ?></th>
+						<th scope="row"><?php esc_html_e( '显示位置', 'cappuccino' ); ?></th>
 						<td>
 							<fieldset>
-								<legend class="screen-reader-text"><?php esc_html_e( '显示位置', 'wp-donate' ); ?></legend>
+								<legend class="screen-reader-text"><?php esc_html_e( '显示位置', 'cappuccino' ); ?></legend>
 								<?php foreach ( $post_types as $post_type ) : ?>
 									<label style="display:block;margin-bottom:6px;">
 										<input
@@ -308,29 +316,29 @@ class WPD_Admin {
 									</label>
 								<?php endforeach; ?>
 							</fieldset>
-							<p class="description"><?php esc_html_e( '选择在哪些文章类型底部显示赞赏图片。', 'wp-donate' ); ?></p>
+							<p class="description"><?php esc_html_e( '选择在哪些文章类型底部显示赞赏图片。', 'cappuccino' ); ?></p>
 						</td>
 					</tr>
 
 					<tr>
 						<th scope="row">
-							<label for="wpd-align"><?php esc_html_e( '对齐方式', 'wp-donate' ); ?></label>
+							<label for="capp-align"><?php esc_html_e( '对齐方式', 'cappuccino' ); ?></label>
 						</th>
 						<td>
-							<select id="wpd-align" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[align]">
-								<option value="left" <?php selected( $settings['align'], 'left' ); ?>><?php esc_html_e( '左对齐', 'wp-donate' ); ?></option>
-								<option value="center" <?php selected( $settings['align'], 'center' ); ?>><?php esc_html_e( '居中', 'wp-donate' ); ?></option>
-								<option value="right" <?php selected( $settings['align'], 'right' ); ?>><?php esc_html_e( '右对齐', 'wp-donate' ); ?></option>
+							<select id="capp-align" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[align]">
+								<option value="left" <?php selected( $settings['align'], 'left' ); ?>><?php esc_html_e( '左对齐', 'cappuccino' ); ?></option>
+								<option value="center" <?php selected( $settings['align'], 'center' ); ?>><?php esc_html_e( '居中', 'cappuccino' ); ?></option>
+								<option value="right" <?php selected( $settings['align'], 'right' ); ?>><?php esc_html_e( '右对齐', 'cappuccino' ); ?></option>
 							</select>
 						</td>
 					</tr>
 
 					<tr>
 						<th scope="row">
-							<label for="wpd-max-width"><?php esc_html_e( '图片最大宽度', 'wp-donate' ); ?></label>
+							<label for="capp-max-width"><?php esc_html_e( '图片最大宽度', 'cappuccino' ); ?></label>
 						</th>
 						<td>
-							<input type="number" id="wpd-max-width" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[max_width]" value="<?php echo esc_attr( $settings['max_width'] ); ?>" min="50" max="800" step="10" />
+							<input type="number" id="capp-max-width" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[max_width]" value="<?php echo esc_attr( $settings['max_width'] ); ?>" min="50" max="800" step="10" />
 							<span>px</span>
 						</td>
 					</tr>

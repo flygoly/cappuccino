@@ -1,0 +1,54 @@
+.capp-donate-box {
+	margin-top: 2em;
+	padding-top: 1.5em;
+	border-top: 1px solid #e0e0e0;
+}
+
+.capp-donate-hint {
+	margin-bottom: 0.75em;
+}
+
+.capp-donate-hint-line {
+	margin: 0 0 0.4em;
+	color: #666;
+	font-size: 0.95em;
+	line-height: 1.5;
+}
+
+.capp-donate-hint-line:last-child {
+	margin-bottom: 0;
+}
+
+.capp-donate-image-wrap {
+	line-height: 0;
+}
+
+.capp-align-left .capp-donate-hint,
+.capp-align-left .capp-donate-image-wrap {
+	text-align: left;
+}
+
+.capp-align-center .capp-donate-hint,
+.capp-align-center .capp-donate-image-wrap {
+	text-align: center;
+}
+
+.capp-align-right .capp-donate-hint,
+.capp-align-right .capp-donate-image-wrap {
+	text-align: right;
+}
+
+.capp-donate-image {
+	display: inline-block;
+	height: auto;
+	border-radius: 4px;
+}
+
+.capp-donate-link {
+	display: inline-block;
+	text-decoration: none;
+}
+
+.capp-donate-link:hover {
+	opacity: 0.85;
+}

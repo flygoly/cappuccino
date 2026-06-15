@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Appends donation image to post content.
  */
-class WPD_Frontend {
+class Cappuccino_Frontend {
 
 	/**
 	 * Initialize frontend hooks.
@@ -29,10 +29,10 @@ class WPD_Frontend {
 		}
 
 		wp_enqueue_style(
-			'wpd-frontend',
-			WPD_PLUGIN_URL . 'assets/css/frontend.css',
+			'capp-frontend',
+			CAPP_PLUGIN_URL . 'assets/css/frontend.css',
 			array(),
-			WPD_VERSION
+			CAPP_VERSION
 		);
 	}
 
@@ -46,7 +46,7 @@ class WPD_Frontend {
 			return false;
 		}
 
-		$settings = WPD_Admin::get_settings();
+		$settings = Cappuccino_Admin::get_settings();
 
 		if ( empty( $settings['enabled'] ) ) {
 			return false;
@@ -100,13 +100,13 @@ class WPD_Frontend {
 
 		$paragraphs = array_map(
 			static function ( $line ) {
-				return sprintf( '<p class="wpd-donate-hint-line">%s</p>', esc_html( $line ) );
+				return sprintf( '<p class="capp-donate-hint-line">%s</p>', esc_html( $line ) );
 			},
 			$lines
 		);
 
 		return sprintf(
-			'<div class="wpd-donate-hint">%s</div>',
+			'<div class="capp-donate-hint">%s</div>',
 			implode( '', $paragraphs )
 		);
 	}
@@ -122,16 +122,16 @@ class WPD_Frontend {
 			return $content;
 		}
 
-		$settings  = WPD_Admin::get_settings();
+		$settings  = Cappuccino_Admin::get_settings();
 		$image_url = self::get_image_url( $settings );
 		$align     = sanitize_html_class( $settings['align'] );
 		$max_width = (int) $settings['max_width'];
 		$alt_text  = ! empty( $settings['hint_text'] )
 			? wp_strip_all_tags( $settings['hint_text'] )
-			: __( '赞赏支持', 'wp-donate' );
+			: __( '赞赏支持', 'cappuccino' );
 
 		$image_html = sprintf(
-			'<img src="%s" alt="%s" class="wpd-donate-image" style="max-width:%dpx" loading="lazy" />',
+			'<img src="%s" alt="%s" class="capp-donate-image" style="max-width:%dpx" loading="lazy" />',
 			esc_url( $image_url ),
 			esc_attr( $alt_text ),
 			$max_width
@@ -139,14 +139,14 @@ class WPD_Frontend {
 
 		if ( ! empty( $settings['link_url'] ) ) {
 			$image_html = sprintf(
-				'<a href="%s" class="wpd-donate-link" target="_blank" rel="noopener noreferrer">%s</a>',
+				'<a href="%s" class="capp-donate-link" target="_blank" rel="noopener noreferrer">%s</a>',
 				esc_url( $settings['link_url'] ),
 				$image_html
 			);
 		}
 
 		$donate_html = sprintf(
-			'<div class="wpd-donate-box wpd-align-%s">%s<div class="wpd-donate-image-wrap">%s</div></div>',
+			'<div class="capp-donate-box capp-align-%s">%s<div class="capp-donate-image-wrap">%s</div></div>',
 			esc_attr( $align ),
 			self::get_hint_html( $settings ),
 			$image_html
